@@ -1,0 +1,26 @@
+git => repository (tempat penyimpanan)
+gitlab,github,etc => service yang menyediakan repository online
+
+github desktop => github repository 
+
+git add => menciptakan repository => publish untuk menciptakan repo di github
+changes => perubahan yang terjadi dari terakhir kali repository ditarik/dibuat 
+commit => menyetujui perubahan 
+push => mengirimkan perbaruan dari local ke online
+fetch => cek apakah ada perubahan direpo online yang membedakan repo online dengan local
+pull => menarik perubahan dari repo online ke local
+branch => menciptakan cabang di dalam repository
+contoh branch pada umumnya :
+- production => source code yang sedang live (sesuai dengan product)
+- testing => source code yang digunakan untuk melakukan testing terhadap fitur yang udah jadi
+- development => source code yang digunakan untuk develop fitur fitur terbaru  
+- buat ig. fiturnya ada reels, login by facebook, saved post 
+- fitur reels branch lain
+- login by facebook branch lain
+- saved post branch lain 
+- 3 branch untuk fitur akan digabung ke dalam branch development
+
+merge => menggabungkan perubahan dalam suatu repo
+pull request => menciptakan permintaan untuk menggabungkan sebuah commit dari satu branch ke branch lain
+fork => mengcopy repo orang lain menjadi repo kita 
+clone => menarik repo online menjadi local
