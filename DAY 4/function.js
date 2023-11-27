@@ -1,4 +1,9 @@
 //declaration
+
+// paramter adalah variable yang menyimpan nilai karakteristik agar sebuah fungsi dapat melakukan proses yang ia kerjakan
+// argumen nilai dari variable
+// method : function yang ada di dalem object
+
 function square(number) {
   return number * number;
 }
@@ -133,3 +138,99 @@ const p2 = (angka1, angka2) => {
 
 x = p2(2, 2);
 console.log(x);
+
+const f = () => {
+  return 1;
+  console.log();
+};
+
+function namafunction(param) {
+  //code block
+}
+
+const namafunction2 = function (param) {};
+
+const namafunction3 = (param) => {
+  //code block
+};
+
+const namafunction4 = (param) => 1;
+
+const multiply = (n1, n2 = 5, n3 = 2) => n1 * n2 * n3;
+console.log(multiply(5, 2));
+console.log(multiply(3)); // n1 = 3, n2 default (5)
+console.log(multiply(10, 5, 9)); // n1 = 3, n2 default (5)
+
+// rest parameter
+
+const myfunction = (a, b, ...restParam) => {
+  console.log(a);
+  console.log(b);
+  // [3,4,5,6,7]
+  for (let i = 0; i < restParam.length; i++) {
+    console.log(restParam[i]);
+  }
+  return [a, b, ...restParam]; // [1,2,3,4,5,6,7]
+};
+
+console.log(myfunction(1, 2, 3, 4, 5, 6, 7));
+
+let number = 1;
+let number2 = number;
+number++;
+console.log(number2, "line 195"); //1
+console.log(number, "line 194"); //2
+
+const numbers = [1, 2];
+const numbers2 = numbers; // menjadikan variable numbers2 sebagai pointer (deep copy)
+const numbers3 = [...numbers]; // shallow copy
+// numbers[2] = 3;
+numbers.push(3);
+numbers2.push(4);
+console.log(numbers2);
+console.log(numbers);
+console.log(numbers3);
+
+// nested function
+
+const getMessages = (fname) => {
+  const sayHello = () => "Hello " + fname + ".";
+  const welcomeMessages = () => "welcome to purwadhika!";
+  return sayHello() + " " + welcomeMessages();
+};
+console.log(getMessages("Udin"));
+
+//closure (function nge return function)
+
+const greeting = (name) => {
+  const defaultMsg = "Hello ";
+  return function () {
+    return defaultMsg + name;
+  };
+};
+const greetingDavid = greeting("david");
+
+console.log(greeting("david")());
+console.log(greetingDavid());
+
+//currying
+const multiplier = (factor) => (number) => factor * number;
+const multiplier2 = (factor) => {
+  return function (number) {
+    return factor * number;
+  };
+};
+const mul3 = multiplier(3);
+const mul5 = multiplier(5);
+console.log(mul3(2));
+console.log(mul5(10));
+console.log(multiplier2(5)(3));
+
+// recursive
+
+const countDown = (fromNumber) => {
+  let nextNumber = fromNumber - 1;
+  if (nextNumber > 0) countDown(nextNumber);
+};
+console.log(fromNumber);
+console.log(countDown(5));
