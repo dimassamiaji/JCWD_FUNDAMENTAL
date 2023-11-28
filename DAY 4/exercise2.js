@@ -21,6 +21,8 @@ arr = [12, 5, 23, 18, 4, 45, 32];
 const result = getLowHighAvg(arr);
 console.log(result);
 
+console.log(arr.reduce);
+
 // 2. Write a function that takes an array of words and returns a string by concatenating the words in the array,
 // separated by commas and - the last word - by an 'and'.
 // a. Example : arr = ["apple", "banana", "cherry", "date"] → “apple,banana,cherry, and date”
@@ -29,6 +31,10 @@ let exampleArr = ["apple", "banana", "cherry", "date"];
 
 // 3. Write a function to split a string and convert it into an array of words
 // a. Example : “Hello World” → [“Hello”, “World”]
+const splitword = (str) => {
+  return str.splitword(" ");
+};
+console.log(splitword("Hello World"));
 
 // 4. Write a function to calculate each element in the same position from two arrays of integer. Assume both arrays are
 // of the same length.
@@ -38,6 +44,12 @@ let exampleArr = ["apple", "banana", "cherry", "date"];
 // not already in the array.
 // a. Example : arr = [1, 2, 3, 4], newElement = 4 → [1, 2, 3, 4]
 // b. Example : arr = [1, 2, 3, 4], newElement = 7 → [1, 2, 3, 4, 7]
+
+const add = (arr=[] , newElement) =>
+arr.indexOf(newElement) == -1 ? [...arr, newElement] + arr
+
+
+
 
 // 1. Write a function to remove all odd numbers in an array and return a new array that contains even numbers only
 // a. Example : numbers = [1, 2, 3, 4, 5, 6] → [2, 4, 6]
@@ -72,4 +84,4 @@ let exampleArr = ["apple", "banana", "cherry", "date"];
 
 // 5. Write a game of rock, paper, scissor function that will return 'Win' or 'Lose'. The function will randomly pick
 // between rock, paper, or scissor.
-// a. Example: if you throw a rock as an argument and the function pick a scissor then it will return 'Win'
+// a. Example : if you throw a rock as an argument and the function pick a scissor then it will return 'Win'

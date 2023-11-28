@@ -35,7 +35,7 @@ const FizzBuzz = (n) => {
     } else if (i % 5 === 0) {
       result.push("Buzz");
     } else {
-      result.push(i.toString());
+      result.push(i);
     }
   }
   return result;
