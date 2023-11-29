@@ -38,4 +38,17 @@ class Hewan {
   bicara() {
     console.log(`${this.nama} mengeluarkan suara ${this.suara}`);
   }
+
+  berjalan() {
+    console.log(`${this.nama} bisa berjalan di air`);
+  }
 }
+
+let kucing = new Hewan("Kitty", "Meow");
+let anjing = new Hewan("Bruno", "Guk");
+
+console.log(kucing.nama);
+console.log(anjing.nama);
+
+kucing.bicara();
+kucing.berjalan();
