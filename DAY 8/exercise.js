@@ -144,9 +144,15 @@ console.log(objectsAreEqual({ a: 1 }, { a: 1 }));
 
 function objectIntersection(obj1, obj2) {
   let intersection = {};
-
-  for (let i = 0; i < obj.length; index++) {}
+  for (let key in obj1) {
+    if (obj2.hasOwnProperty(key) && obj1[key] === obj2[key]) {
+      intersection[key] = obj1[key];
+    }
+  }
+  return intersection;
 }
+
+console.log(objectIntersection({ a: 1, b: 2 }, { a: 1, c: 3 }));
 
 // ● Create a function to merge two array of student data and remove duplicate data
 // ● Student data : name & email
@@ -165,13 +171,87 @@ function objectIntersection(obj1, obj2) {
 // { name: ‘Student 2’, email : ‘student2@mail.com’ },
 // { name: ‘Student 3’, email : ‘student3@mail.com’ }
 
+function mergeAndRemoveDuplicates(arr1, arr2) {
+  let mergedArray = [...arr1, ...arr2];
+  let uniqueArray = [];
+
+  mergedArray.forEach(function (item) {
+    if (!this[item.email]) {
+      this[item.email] = true;
+      uniqueArray.push(item);
+    }
+  }, {});
+  return uniqueArray;
+}
+
+let arr1 = [
+  { name: "Student 1", email: "student1@mail.com" },
+  { name: "Student 2", email: "student2@mail.com" },
+];
+
+let arr2 = [
+  { name: "Student 1", email: "student1@mail.com" },
+  { name: "Student 3", email: "student3@mail.com" },
+];
+
+let mergedArray = mergeAndRemoveDuplicates(arr1, arr2);
+console.log(mergedArray);
+
 // ● Create a function that can accept input as an array of objects and switch all values into property and
 // property into value
 // ● Example :
 // ○ Input : [{ name: ‘David’, age: 20 }]
 // ○ Output : [{ David: ‘name’, 20: ‘age’}]
 
+function switchProperties(array) {
+  return array.map((obj) => {
+    let switchedObj = {};
+
+    for (let key in obj) {
+      switchedObj[obj[key]] = key;
+    }
+    return switchedObj;
+  });
+}
+
+let inputArray = [{ name: "David", age: 20 }];
+let outputArray = switchProperties(inputArray);
+console.log(outputArray);
+
 // ● Create a function to find a factorial number using recursion
 // ● Example
 // ○ Input : 5
 // ○ Output: 5! = 5 x 4 x 3 x 2 x 1 = 120
+
+function factorial(n) {
+  if (n === 0 || n === 1) {
+    return 1;
+  }
+  return n * factorial(n - 1);
+}
+
+console.log(factorial(5));
+
+// 1. Buat sebuah array of products
+// a. Setiap product memiliki property name,price
+// b. Product sepatu memiliki category,size,color,brand
+// c. Product Komputer memiliki category,brand,ram, storage,processor
+// d. Product Sepeda memiliki category,brand,color,type
+
+class Product {
+constructor (name, price)
+
+}
+
+// 2. Buat sebuah function untuk filtering product by category atau product by name
+
+// 3. Buat sebuah function untuk mengurutkan product dari termurah-termahal, termahal-termurah
+
+// 4. Buatlah sebuah class untuk menampung user
+// a. Setiap user memiliki email,name,password
+// b. Untuk menambah user baru wajib lewat register
+// c. Email tidak boleh ada yang sama
+// d. Input email wajib ada validasi symbol “@”
+// e. Input password wajib menggunakan huruf besar 1, huruf kecil 1, symbol @ atau !
+// f. Tampilkan user yg sudah terdaftar lewat sebuah getter
+// g. User yang tampil hanya boleh email dan namenya saja
