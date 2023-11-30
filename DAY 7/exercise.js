@@ -237,15 +237,76 @@ console.log(factorial(5));
 // b. Product sepatu memiliki category,size,color,brand
 // c. Product Komputer memiliki category,brand,ram, storage,processor
 // d. Product Sepeda memiliki category,brand,color,type
+// 2. Buat sebuah function untuk filtering product by category atau product by name
+// 3. Buat sebuah function untuk mengurutkan product dari termurah-termahal, termahal-termurah
 
-class Product {
-constructor (name, price)
-
+class IsProduct {
+  constructor(name, price, category) {
+    this.name = name;
+    this.price = price;
+    this.category = category;
+  }
+}
+class Sepatu extends IsProduct {
+  constructor(name, price, category, size, color, brand) {
+    super(name, price, category);
+    this.size = size;
+    this.color = color;
+    this.brand = brand;
+  }
+}
+class Komputer extends IsProduct {
+  constructor(name, price, category, brand, ram, storage, processor) {
+    super(name, price, category);
+    this.brand = brand;
+    this.ram = ram;
+    this.storage = storage;
+    this.processor = processor;
+  }
 }
 
-// 2. Buat sebuah function untuk filtering product by category atau product by name
+class Sepeda extends IsProduct {
+  constructor(name, price, category, brand, color, type) {
+    super(name, price, category);
+    this.brand = brand;
+    this.color = color;
+    this.type = type;
+  }
+}
 
-// 3. Buat sebuah function untuk mengurutkan product dari termurah-termahal, termahal-termurah
+const product = [
+  new Sepatu("Adidas 90 Continental", 1500000, "Sepatu", 43, "Black", "Adidas"),
+  new Komputer(
+    "Zenbook Pro 14",
+    25000000,
+    "Komputer",
+    "Asus",
+    "16 Mb",
+    "1 Tb",
+    "Intel Core i7"
+  ),
+  new Sepeda("Trifold", 5000000, "Sepeda", "Polygon", "Merah", "Fold Bike"),
+];
+
+function findProductsByCategory(category) {
+  return product.filter((item) => item.category === category);
+}
+console.log(findProductsByCategory("Komputer"));
+
+function findProductByName(name) {
+  return product.find((item) => item.name === name);
+}
+console.log(findProductByName("Trifold"));
+
+function sortProductFromLowToHigh() {
+  return product.sort((a, b) => a.price - b.price);
+}
+console.log(sortProductFromLowToHigh());
+
+function sortProductFromHighToLow() {
+  return product.sort((a, b) => b.price - a.price);
+}
+console.log(sortProductFromHighToLow());
 
 // 4. Buatlah sebuah class untuk menampung user
 // a. Setiap user memiliki email,name,password
