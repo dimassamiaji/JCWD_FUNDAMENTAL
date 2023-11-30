@@ -161,7 +161,7 @@ const person = {
     console.log(this.fullname());
   },
   test: () => {
-    return this.fName; //tidak bisa access
+    return this.fName; // tidak bisa access
   },
   test2: function () {
     return this.fName; //bisa access
