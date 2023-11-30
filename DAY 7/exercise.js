@@ -121,12 +121,18 @@ console.log(result); // Output: [ { product: Product { name: 'Product 1', price:
 // ○ Output: true
 
 function objectsAreEqual(obj1, obj2) {
-  for (let i = 0; i < obj1.length; i++)
-    if (Object.keys(obj1).length !== Object.keys(obj2).length) {
+  if (Object.keys(obj1).length !== Object.keys(obj2).length) {
+    return false;
+  }
+
+  for (let key in obj1) {
+    if (obj1[key] !== obj2[key]) {
       return false;
     }
-}
+  }
 
+  return true;
+}
 console.log(objectsAreEqual({ a: 2 }, { a: 1 }));
 console.log(objectsAreEqual({ a: "Hello" }, { a: 1 }));
 console.log(objectsAreEqual({ a: 1 }, { a: 1 }));
@@ -135,6 +141,12 @@ console.log(objectsAreEqual({ a: 1 }, { a: 1 }));
 // ● Example
 // ○ Input : { a: 1, b: 2 } & { a: 1, c: 3 }
 // ○ Output: { a: 1 }
+
+function objectIntersection(obj1, obj2) {
+  let intersection = {};
+
+  for (let i = 0; i < obj.length; index++) {}
+}
 
 // ● Create a function to merge two array of student data and remove duplicate data
 // ● Student data : name & email
