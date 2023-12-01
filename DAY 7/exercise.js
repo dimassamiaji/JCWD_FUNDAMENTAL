@@ -316,3 +316,11 @@ console.log(sortProductFromHighToLow());
 // e. Input password wajib menggunakan huruf besar 1, huruf kecil 1, symbol @ atau !
 // f. Tampilkan user yg sudah terdaftar lewat sebuah getter
 // g. User yang tampil hanya boleh email dan namenya saja
+
+class User {
+  constructor(name, email, password) {
+    this.name = name;
+    this.email = email;
+    this.password = password;
+  }
+}
