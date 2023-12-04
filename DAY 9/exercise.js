@@ -164,3 +164,19 @@ const parttimeEmployee = new ParttimeEmployee(2, "Aji", 5);
 
 fulltimeEmployee.displayEmployeeDetails();
 parttimeEmployee.displayEmployeeDetails();
+
+
+
+// Buatlah sebuah program untuk sebuah restaurant 
+// Menu resto ada cah kangkung, ayam mayo, fuyunghai , (bisa ditambah)
+// Per masing2 menu akan memotong stock bahan makanan 
+// Untuk resep yang memotong bahan makanan bebas bisa dibuat sendiri 
+
+// Customer bisa memesan makanan 
+// Customer memiliki key nama,total,list pesanan, tgl pesan 
+
+// Resto bisa cek bahan makanan mereka
+// Resto bisa cek makanan yang paling sering dipesan
+// Resto bisa cek list pesanan makanan berdasarkan tanggal 
+// Resto bisa menambah stock bahan makanan 
+// Resto bisa cek customer mana yang menghabiskan uang paling banyak (sum dari seluruh order dari nama yang sama)
