@@ -25,10 +25,10 @@
 // ■ Show winner name
 
 class Player {
-  constructor(name, health, power) {
+  constructor(name, health = 100, power = 10) {
     this.name = name;
-    this.health = 100;
-    this.power = 10;
+    this.health = health === 0 ? 100 : health;
+    this.power = power === 0 ? 10 : power;
   }
 
   hit(power) {
@@ -36,11 +36,8 @@ class Player {
   }
 
   useItem(item) {
-    if (item.health === 10) {
-      this.health += 10;
-    } else if (item.power === 10) {
-      this.power += 10;
-    }
+    this.health += item.health;
+    this.power += item.power;
   }
 
   showStatus() {
@@ -52,55 +49,61 @@ class Player {
 
 class ShootingGame {
   constructor(player1, player2) {
-    this.player1 = player1;
-    this.player2 = player2;
+    this.players = [player1, player2];
+    this.currentPlayer = this.players[Math.floor(Math.random() * 2)];
+    this.otherPlayer = this.players.find(
+      (player) => player !== this.currentPlayer
+    );
   }
   getRandomItem() {
     return {
       health: Math.random() > 0.5 ? 10 : 0,
-      power: Math.random() > 0.5 ? 10 : 0,
+      power: 0,
     };
   }
 
   start() {
-    let player1Turn = true;
-    while (this.player1.health > 0 && this.player2.health > 0) {
-      this.player1.showStatus();
-      this.player2.showStatus();
+    let round = 1;
+    while (this.players[0].health > 0 && this.players[1].health > 0) {
+      console.log(`Round ${round}`);
+      console.log("Player Status before shooting");
+      this.players[0].showStatus();
+      this.players[1].showStatus();
 
-      const round = 0;
-      console.log(`\nround ${round}`);
+      const itemPlayer1 = this.getRandomItem();
+      const itemPlayer2 = this.getRandomItem();
 
-      const player1Item = this.getRandomItem();
-      const player2Item = this.getRandomItem();
+      this.players[0].useItem(itemPlayer1);
+      this.players[1].useItem(itemPlayer2);
 
-      this.player1.useItem(player1Item);
-      this.player2.useItem(player2Item);
+      this.otherPlayer.hit(this.currentPlayer.power);
+      this.currentPlayer.hit(this.otherPlayer.power);
 
-      this.player1.showStatus();
-      this.player2.showStatus();
+      console.log("Player Status after shooting");
+      this.players[0].showStatus();
+      this.players[1].showStatus();
 
-      if (player1Turn) {
-        this.player2.hit(this.player1.power);
-      } else {
-        this.player1.hit(this.player2.power);
-      }
-
-      player1Turn = !player1Turn;
+      [this.currentPlayer, this.otherPlayer] = [
+        this.otherPlayer,
+        this.currentPlayer,
+      ];
+      round++;
     }
-
-    if (this.player1.health > 0) {
-      console.log(`Winner is Player ${this.player1.name}`);
+    if (this.players[0].health <= 0 && this.players[1].health <= 0) {
+      console.log("it's a draw!");
     } else {
-      console.log(`Winner is Player ${this.player2.name}`);
+      const winner =
+        this.players[0].health > 0 ? this.players[0] : this.players[1];
+      console.log(`The winner is ${winner.name}`);
     }
   }
 }
 
-const player1 = new Player("Asta");
-const player2 = new Player("Yuno");
-const game = new ShootingGame(player1, player2);
-game.start();
+const player1 = new Player("Player A");
+const player2 = new Player("Player B");
+
+const shootingGame = new ShootingGame(player1, player2);
+shootingGame.start();
 
 // Exercise - Employee Salary
 
@@ -165,225 +168,222 @@ const parttimeEmployee = new ParttimeEmployee(2, "Aji", 5);
 fulltimeEmployee.displayEmployeeDetails();
 parttimeEmployee.displayEmployeeDetails();
 
-/*
-Buatlah sebuah program untuk sebuah restaurant
-Menu resto ada cah kangkung, ayam mayo, fuyunghai , (bisa ditambah)
-Per masing2 menu akan memotong stock bahan makanan
-Untuk resep yang memotong bahan makanan bebas bisa dibuat sendiri
+// Buatlah sebuah program untuk sebuah restaurant
+// Menu resto ada cah kangkung, ayam mayo, fuyunghai , (bisa ditambah)
+// Per masing2 menu akan memotong stock bahan makanan
+// Untuk resep yang memotong bahan makanan bebas bisa dibuat sendiri
 
-Customer bisa memesan makanan
-Customer memiliki key nama,total,list pesanan, tgl pesan
+// Customer bisa memesan makanan
+// Customer memiliki key nama,total,list pesanan, tgl pesan
 
-Resto bisa cek bahan makanan mereka
-Resto bisa cek makanan yang paling sering dipesan
-Resto bisa cek list pesanan makanan berdasarkan tanggal
-Resto bisa menambah stock bahan makanan
-Resto bisa cek customer mana yang menghabiskan uang paling banyak (sum dari seluruh order dari nama yang sama)
-*/
+// Resto bisa cek bahan makanan mereka
+// Resto bisa cek makanan yang paling sering dipesan
+// Resto bisa cek list pesanan makanan berdasarkan tanggal
+// Resto bisa menambah stock bahan makanan
+// Resto bisa cek customer mana yang menghabiskan uang paling banyak (sum dari seluruh order dari nama yang sama)
 
-// daftar bahan makanan
-class Restaurant {
-  constructor(menu) {
-    this.menu = {
-      "cah kangkung": {
-        ingredients: {
-          kangkung: 5,
-          garlic: 3,
-        },
-        harga: 20000,
-      },
-      "ayam mayo": {
-        ingredients: {
-          ayam: 7,
-          mayonaise: 3,
-        },
-        harga: 30000,
-      },
-      fuyunghai: {
-        ingredients: {
-          telur: 7,
-          bakso: 5,
-          ayam: 3,
-        },
-        harga: 40000,
-      },
-    };
-    this.stockBahan = {
-      kangkung: 100,
-      garlic: 100,
-      bakso: 100,
-      ayam: 100,
-      mayonaise: 100,
-    };
-    this.pesananMakanan = [];
-  }
+// // daftar bahan makanan
+// class Restaurant {
+//   constructor(menu) {
+//     this.menu = {
+//       "cah kangkung": {
+//         ingredients: {
+//           kangkung: 5,
+//           garlic: 3,
+//         },
+//         harga: 20000,
+//       },
+//       "ayam mayo": {
+//         ingredients: {
+//           ayam: 7,
+//           mayonaise: 3,
+//         },
+//         harga: 30000,
+//       },
+//       fuyunghai: {
+//         ingredients: {
+//           telur: 7,
+//           bakso: 5,
+//           ayam: 3,
+//         },
+//         harga: 40000,
+//       },
+//     };
+//     this.stockBahan = {
+//       kangkung: 100,
+//       garlic: 100,
+//       bakso: 100,
+//       ayam: 100,
+//       mayonaise: 100,
+//     };
+//     this.pesananMakanan = [];
+//   }
 
-  motongStock(menu) {
-    for (let bahan in this.menuResto[menu].ingredients) {
-      this.stockBahan[bahan] -= this.menuResto[menu].ingredients[bahan];
-    }
-  }
+//   motongStock(menu) {
+//     for (let bahan in this.menuResto[menu].ingredients) {
+//       this.stockBahan[bahan] -= this.menuResto[menu].ingredients[bahan];
+//     }
+//   }
 
-  orderMakanan(nama, pesanan) {
-    let total = 0;
-    let listPesanan = [];
+//   orderMakanan(nama, pesanan) {
+//     let total = 0;
+//     let listPesanan = [];
 
-    pesanan.forEach((item) => {
-      let menu = this.menuResto[item.menu];
-      let harga = menu.harga;
-      total += harga * item.jumlah;
-      listPesanan.push({
-        menu: item.menu,
-        jumlah: item.jumlah,
-        harga: harga,
-      });
+//     pesanan.forEach((item) => {
+//       let menu = this.menuResto[item.menu];
+//       let harga = menu.harga;
+//       total += harga * item.jumlah;
+//       listPesanan.push({
+//         menu: item.menu,
+//         jumlah: item.jumlah,
+//         harga: harga,
+//       });
 
-      this.motongStock(item.menu);
-    });
+//       this.motongStock(item.menu);
+//     });
 
-    let tglPesan = new Date();
-    let order = {
-      nama: nama,
-      total: total,
-      listPesanan: listPesanan,
-      tglPesan: tglPesan,
-    };
+//     let tglPesan = new Date();
+//     let order = {
+//       nama: nama,
+//       total: total,
+//       listPesanan: listPesanan,
+//       tglPesan: tglPesan,
+//     };
 
-    this.pesananMakanan.push(order);
-    return order;
-  }
+//     this.pesananMakanan.push(order);
+//     return order;
+//   }
 
-  cekHargaTerendah(menu) {
-    let hargaTerendah = Infinity;
-    let bahanTerendah = "";
+//   cekHargaTerendah(menu) {
+//     let hargaTerendah = Infinity;
+//     let bahanTerendah = "";
 
-    for (let bahan in this.menuResto[menu].ingredients) {
-      let harga = this.menuResto[menu].ingredients[bahan];
-      if (harga < hargaTerendah) {
-        hargaTerendah = harga;
-        bahanTerendah = bahan;
-      }
-    }
+//     for (let bahan in this.menuResto[menu].ingredients) {
+//       let harga = this.menuResto[menu].ingredients[bahan];
+//       if (harga < hargaTerendah) {
+//         hargaTerendah = harga;
+//         bahanTerendah = bahan;
+//       }
+//     }
 
-    return bahanTerendah;
-  }
+//     return bahanTerendah;
+//   }
 
-  cekStokTerbatas(menu) {
-    let stokTerbatas = Infinity;
-    let bahanTerbatas = "";
+//   cekStokTerbatas(menu) {
+//     let stokTerbatas = Infinity;
+//     let bahanTerbatas = "";
 
-    for (let bahan in this.menuResto[menu].ingredients) {
-      let stok = this.stockBahan[bahan];
-      if (stok < stokTerbatas) {
-        stokTerbatas = stok;
-        bahanTerbatas = bahan;
-      }
-    }
+//     for (let bahan in this.menuResto[menu].ingredients) {
+//       let stok = this.stockBahan[bahan];
+//       if (stok < stokTerbatas) {
+//         stokTerbatas = stok;
+//         bahanTerbatas = bahan;
+//       }
+//     }
 
-    return bahanTerbatas;
-  }
+//     return bahanTerbatas;
+//   }
 
-  cekHargaTertinggi(menu) {
-    let hargaTertinggi = -Infinity;
-    let bahanTertinggi = "";
+//   cekHargaTertinggi(menu) {
+//     let hargaTertinggi = -Infinity;
+//     let bahanTertinggi = "";
 
-    for (let bahan in this.menuResto[menu].ingredients) {
-      let harga = this.menuResto[menu].ingredients[bahan];
-      if (harga > hargaTertinggi) {
-        hargaTertinggi = harga;
-        bahanTertinggi = bahan;
-      }
-    }
+//     for (let bahan in this.menuResto[menu].ingredients) {
+//       let harga = this.menuResto[menu].ingredients[bahan];
+//       if (harga > hargaTertinggi) {
+//         hargaTertinggi = harga;
+//         bahanTertinggi = bahan;
+//       }
+//     }
 
-    return bahanTertinggi;
-  }
-}
+//     return bahanTertinggi;
+//   }
+// }
 
+// class Restaurant {
+//   constructor() {
+//     this.menu = {
+//       kangkung: { price: 5000, stock: 100 },
+//       ayam_mayo: { price: 10000, stock: 100 },
+//       fuyunghai: { price: 7000, stock: 100 },
+//     };
+//     this.orders = [];
+//     this.customers = [];
+//   }
 
-class Restaurant {
-  constructor() {
-     this.menu = {
-       "kangkung": { "price": 5000, "stock": 100 },
-       "ayam_mayo": { "price": 10000, "stock": 100 },
-       "fuyunghai": { "price": 7000, "stock": 100 },
-     };
-     this.orders = [];
-     this.customers = [];
-  }
- 
-  addStock(item, amount) {
-     this.menu[item].stock += amount;
-  }
- 
-  checkStock(item) {
-     return this.menu[item].stock;
-  }
- 
-  checkBestSellingItem() {
-     let bestSellingItem = null;
-     let maxOrder = 0;
- 
-     this.orders.forEach(order => {
-       order.list.forEach(item => {
-         if (this.menu[item]) {
-           if (order.list.length > maxOrder) {
-             maxOrder = order.list.length;
-             bestSellingItem = item;
-           }
-         }
-       });
-     });
- 
-     return bestSellingItem;
-  }
- 
-  checkOrderByDate(date) {
-     let filteredOrders = this.orders.filter(order => order.date === date);
-     return filteredOrders;
-  }
- 
-  addOrder(customer, list) {
-     let total = 0;
- 
-     list.forEach(item => {
-       if (this.menu[item]) {
-         this.menu[item].stock--;
-         total += this.menu[item].price;
-       }
-     });
- 
-     this.orders.push({ customer, total, list, date: new Date() });
-  }
- 
-  addCustomer(name, total) {
-     this.customers.push({ name, total });
-  }
- 
-  checkMostExpensiveCustomer() {
-     let mostExpensiveCustomer = null;
-     let maxTotal = 0;
- 
-     this.customers.forEach(customer => {
-       if (customer.total > maxTotal) {
-         maxTotal = customer.total;
-         mostExpensiveCustomer = customer.name;
-       }
-     });
- 
-     return mostExpensiveCustomer;
-  }
- }
+//   addStock(item, amount) {
+//     this.menu[item].stock += amount;
+//   }
 
- let restaurant = new Restaurant();
+//   checkStock(item) {
+//     return this.menu[item].stock;
+//   }
 
-restaurant.addOrder("Customer 1", ["kangkung", "ayam_mayo"]);
-restaurant.addOrder("Customer 1", ["kangkung", "fuyunghai"]);
-restaurant.addOrder("Customer 2", ["ayam_mayo", "fuyunghai"]);
+//   checkBestSellingItem() {
+//     let bestSellingItem = null;
+//     let maxOrder = 0;
 
-restaurant.addCustomer("Customer 1", 25000);
-restaurant.addCustomer("Customer 2", 22000);
+//     this.orders.forEach((order) => {
+//       order.list.forEach((item) => {
+//         if (this.menu[item]) {
+//           if (order.list.length > maxOrder) {
+//             maxOrder = order.list.length;
+//             bestSellingItem = item;
+//           }
+//         }
+//       });
+//     });
 
-console.log(restaurant.checkStock("kangkung")); // 98
-console.log(restaurant.checkBestSellingItem()); // "kangkung"
-console.log(restaurant.checkOrderByDate(new Date())); // list order by date
-console.log(restaurant.checkMostExpensiveCustomer()); // "Customer 1"
+//     return bestSellingItem;
+//   }
+
+//   checkOrderByDate(date) {
+//     let filteredOrders = this.orders.filter((order) => order.date === date);
+//     return filteredOrders;
+//   }
+
+//   addOrder(customer, list) {
+//     let total = 0;
+
+//     list.forEach((item) => {
+//       if (this.menu[item]) {
+//         this.menu[item].stock--;
+//         total += this.menu[item].price;
+//       }
+//     });
+
+//     this.orders.push({ customer, total, list, date: new Date() });
+//   }
+
+//   addCustomer(name, total) {
+//     this.customers.push({ name, total });
+//   }
+
+//   checkMostExpensiveCustomer() {
+//     let mostExpensiveCustomer = null;
+//     let maxTotal = 0;
+
+//     this.customers.forEach((customer) => {
+//       if (customer.total > maxTotal) {
+//         maxTotal = customer.total;
+//         mostExpensiveCustomer = customer.name;
+//       }
+//     });
+
+//     return mostExpensiveCustomer;
+//   }
+// }
+
+// let restaurant = new Restaurant();
+
+// restaurant.addOrder("Customer 1", ["kangkung", "ayam_mayo"]);
+// restaurant.addOrder("Customer 1", ["kangkung", "fuyunghai"]);
+// restaurant.addOrder("Customer 2", ["ayam_mayo", "fuyunghai"]);
+
+// restaurant.addCustomer("Customer 1", 25000);
+// restaurant.addCustomer("Customer 2", 22000);
+
+// console.log(restaurant.checkStock("kangkung")); // 98
+// console.log(restaurant.checkBestSellingItem()); // "kangkung"
+// console.log(restaurant.checkOrderByDate(new Date())); // list order by date
+// console.log(restaurant.checkMostExpensiveCustomer()); // "Customer 1
