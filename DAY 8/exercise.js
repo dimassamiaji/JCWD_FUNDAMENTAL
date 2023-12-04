@@ -1,326 +1,389 @@
-// ● Create a function to calculate array of student data
-// ● The object has this following properties :
-// ○ Name → String
-// ○ Email → String
-// ○ Age → Date
-// ○ Score → Number
-// ● Parameters : array of student
-// ● Return values :
-// ○ Object with this following properties :
-// ■ Score
-// ● Highest
-// ● Lowest
-// ● Average
-// ■ Age
-// ● Highest
-// ● Lowest
-// ● Average
+// Exercise - Shooting Game
 
-class Student {
-  constructor(name, email, age, score) {
+// ● Specifications :
+// ○ Create a shooting game between two player
+// ○ Each player has three properties : name, health and power
+// ○ Each player will take turns to shooting
+// ○ Before shooting, players get a chance to get random items (health +10 or power +10)
+// ○ The game will continue until one of the players has health < 0
+// ● Requirements :
+// ○ Create ShootingGame & Player class
+// ○ ShootingGame class :
+// ■ constructor(player1, player2) → player objects as a parameter
+// ■ getRandomItem() → return { health: 0 or 10, power: 0 or 10 }
+// ■ start() → start shooting games
+// ○ Player class :
+// ■ Property → name, health (default 100), power (default 10)
+// ■ hit(power) → subtract player health
+// ■ useItem(item) → apply item to player (increase health or power, based on result from getRandomItem())
+// ■ showStatus() → show player status (ex : “Player A (Health => 100, Power => 10) ”)
+// ○ ShootingGame start() function flow :
+// ■ In every turn :
+// ● Show each player status before shooting
+// ● Get random item for each player before shooting
+// ● Show each player status after shooting
+// ■ Show winner name
+
+class Player {
+  constructor(name, health, power) {
     this.name = name;
-    this.email = email;
-    this.age = age;
-    this.score = score;
-  }
-}
-
-class LHA {
-  constructor(students = [], key) {
-    const numbers = students.map((val) => val[key]);
-    // if key = score
-    // val => val ["score"] or val.score
-    this.highest = Math.max(...numbers);
-    this.lowest = Math.min(...numbers);
-    this.average = (
-      numbers.reduce((sum, curr) => sum + curr) / numbers.length
-    ).toFixed(2);
-  }
-}
-
-const calculate = (students = []) => {
-  return {
-    Score: new LHA(students, "score"),
-    Age: new LHA(students, "age"),
-  };
-};
-
-const students = [
-  new Student("naruto", "n@gmail.com", 19, 70),
-  new Student("sasuke", "s@gmail", 17, 100),
-  new Student("sakura", "saku@gmail.com", 20, 100),
-];
-
-console.log(calculate(students));
-
-// ● Create a program to create transaction
-// ● Product Class
-// ○ Properties
-// ■ Name
-// ■ Price
-// ● Transaction Class
-// ○ Properties
-// ■ Total
-// ■ Product
-// ● All product data
-// ● Qty
-// ○ Add to cart method → Add product to transaction
-// ○ Show total method → Show total current transaction
-// ○ Checkout method → Finalize transaction, return transaction data
-
-class Product {
-  constructor(name, price) {
-    this.name = name;
-    this.price = price;
-  }
-}
-
-class Transaction {
-  constructor(total, products) {
-    this.total = 0;
-    this.products = [];
+    this.health = 100;
+    this.power = 10;
   }
 
-  addToCart(product, qty) {
-    this.products.push({ product, qty });
-    this.total += product.price * qty;
+  hit(power) {
+    this.health -= power;
   }
 
-  showTotal() {
-    console.log("Total: ", this.total);
-  }
-
-  checkout() {
-    console.log("Transaction data: ", this.products);
-    console.log("Total amount: ", this.total);
-    return this.products;
-  }
-}
-
-let transaction = new Transaction();
-let product1 = new Product("susu", 80000);
-let product2 = new Product("kopi", 10000);
-
-transaction.addToCart(product1, 5);
-transaction.addToCart(product2, 5);
-
-transaction.showTotal(); // Output: Total: 50
-
-let result = transaction.checkout();
-console.log(result); // Output: [ { product: Product { name: 'Product 1', price: 10 }, qty: 2 }, { product: Product { name: 'Product 2', price: 20 }, qty: 1 } ]
-
-// ● Create a function to check if two objects are equal
-// ● Example
-// ○ Input : { a: 2 } & { a: 1 }
-// ○ Output: false
-// ● Example
-// ○ Input : { a: “Hello” } & { a: 1 }
-// ○ Output: false
-// ● Example
-// ○ Input : { a: 1 } & { a: 1 }
-// ○ Output: true
-
-function objectsAreEqual(obj1, obj2) {
-  if (Object.keys(obj1).length !== Object.keys(obj2).length) {
-    return false;
-  }
-
-  for (let key in obj1) {
-    if (obj1[key] !== obj2[key]) {
-      return false;
+  useItem(item) {
+    if (item.health === 10) {
+      this.health += 10;
+    } else if (item.power === 10) {
+      this.power += 10;
     }
   }
 
-  return true;
+  showStatus() {
+    console.log(
+      `Player ${this.name} (Health => ${this.health}, Power => ${this.power})`
+    );
+  }
 }
-console.log(objectsAreEqual({ a: 2 }, { a: 1 }));
-console.log(objectsAreEqual({ a: "Hello" }, { a: 1 }));
-console.log(objectsAreEqual({ a: 1 }, { a: 1 }));
 
-// ● Create a function to get the intersection of two objects
-// ● Example
-// ○ Input : { a: 1, b: 2 } & { a: 1, c: 3 }
-// ○ Output: { a: 1 }
+class ShootingGame {
+  constructor(player1, player2) {
+    this.player1 = player1;
+    this.player2 = player2;
+  }
+  getRandomItem() {
+    return {
+      health: Math.random() > 0.5 ? 10 : 0,
+      power: Math.random() > 0.5 ? 10 : 0,
+    };
+  }
 
-function objectIntersection(obj1, obj2) {
-  let intersection = {};
-  for (let key in obj1) {
-    if (obj2.hasOwnProperty(key) && obj1[key] === obj2[key]) {
-      intersection[key] = obj1[key];
+  start() {
+    let player1Turn = true;
+    while (this.player1.health > 0 && this.player2.health > 0) {
+      this.player1.showStatus();
+      this.player2.showStatus();
+
+      const round = 0;
+      console.log(`\nround ${round}`);
+
+      const player1Item = this.getRandomItem();
+      const player2Item = this.getRandomItem();
+
+      this.player1.useItem(player1Item);
+      this.player2.useItem(player2Item);
+
+      this.player1.showStatus();
+      this.player2.showStatus();
+
+      if (player1Turn) {
+        this.player2.hit(this.player1.power);
+      } else {
+        this.player1.hit(this.player2.power);
+      }
+
+      player1Turn = !player1Turn;
+    }
+
+    if (this.player1.health > 0) {
+      console.log(`Winner is Player ${this.player1.name}`);
+    } else {
+      console.log(`Winner is Player ${this.player2.name}`);
     }
   }
-  return intersection;
 }
 
-console.log(objectIntersection({ a: 1, b: 2 }, { a: 1, c: 3 }));
+const player1 = new Player("Asta");
+const player2 = new Player("Yuno");
+const game = new ShootingGame(player1, player2);
+game.start();
 
-// ● Create a function to merge two array of student data and remove duplicate data
-// ● Student data : name & email
-// ● Example :
-// Array1 → [
-// { name: ‘Student 1’, email : ‘student1@mail.com’ },
-// { name: ‘Student 2’, email : ‘student2@mail.com’ }
-// ]
-// Array2 → [
-// { name: ‘Student 1’, email : ‘student1@mail.com’ },
-// { name: ‘Student 3’, email : ‘student3@mail.com’ }
-// ]
-// ● Result :
-// ArrayResult → [
-// { name: ‘Student 1’, email : ‘student1@mail.com’ },
-// { name: ‘Student 2’, email : ‘student2@mail.com’ },
-// { name: ‘Student 3’, email : ‘student3@mail.com’ }
+// Exercise - Employee Salary
 
-function mergeAndRemoveDuplicates(arr1, arr2) {
-  let mergedArray = [...arr1, ...arr2];
-  let uniqueArray = [];
+// ● Specifications :
+// ○ Create a program to calculate total salary based on employee type
+// ○ There are two types of employee : full-time & part-time
+// ○ Salary for full-time employee :
+// ■ IDR 100.000 / hour
+// ■ IDR 75.000 / hour, if the number of working hours per day is more than 6 hours
+// ○ Salary for part-time employee :
+// ■ IDR 50.000 / hour
+// ■ IDR 30.000 / hour, if the number of working hours per day is more than 6 hours
+// ● Requirements :
+// ○ Create an Employee as a parent class
+// ○ Create a FulltimeEmployee and ParttimeEmployee as a child of Employee class
+// ■ Create a method in that class to add working hour per day
+// ■ Create a method in that class to calculate total salary
+// ○ Use inheritance concept
 
-  mergedArray.forEach(function (item) {
-    if (!this[item.email]) {
-      this[item.email] = true;
-      uniqueArray.push(item);
-    }
-  }, {});
-  return uniqueArray;
-}
-
-let arr1 = [
-  { name: "Student 1", email: "student1@mail.com" },
-  { name: "Student 2", email: "student2@mail.com" },
-];
-
-let arr2 = [
-  { name: "Student 1", email: "student1@mail.com" },
-  { name: "Student 3", email: "student3@mail.com" },
-];
-
-let mergedArray = mergeAndRemoveDuplicates(arr1, arr2);
-console.log(mergedArray);
-
-// ● Create a function that can accept input as an array of objects and switch all values into property and
-// property into value
-// ● Example :
-// ○ Input : [{ name: ‘David’, age: 20 }]
-// ○ Output : [{ David: ‘name’, 20: ‘age’}]
-
-function switchProperties(array) {
-  return array.map((obj) => {
-    let switchedObj = {};
-
-    for (let key in obj) {
-      switchedObj[obj[key]] = key;
-    }
-    return switchedObj;
-  });
-}
-
-let inputArray = [{ name: "David", age: 20 }];
-let outputArray = switchProperties(inputArray);
-console.log(outputArray);
-
-// ● Create a function to find a factorial number using recursion
-// ● Example
-// ○ Input : 5
-// ○ Output: 5! = 5 x 4 x 3 x 2 x 1 = 120
-
-function factorial(n) {
-  if (n === 0 || n === 1) {
-    return 1;
-  }
-  return n * factorial(n - 1);
-}
-
-console.log(factorial(5));
-
-// 1. Buat sebuah array of products
-// a. Setiap product memiliki property name,price
-// b. Product sepatu memiliki category,size,color,brand
-// c. Product Komputer memiliki category,brand,ram, storage,processor
-// d. Product Sepeda memiliki category,brand,color,type
-// 2. Buat sebuah function untuk filtering product by category atau product by name
-// 3. Buat sebuah function untuk mengurutkan product dari termurah-termahal, termahal-termurah
-
-class IsProduct {
-  constructor(name, price, category) {
+class Employee {
+  constructor(id, name, employeeType) {
+    this.id = id;
     this.name = name;
-    this.price = price;
-    this.category = category;
+    this.employeeType = employeeType;
   }
-}
-class Sepatu extends IsProduct {
-  constructor(name, price, category, size, color, brand) {
-    super(name, price, category);
-    this.size = size;
-    this.color = color;
-    this.brand = brand;
-  }
-}
-class Komputer extends IsProduct {
-  constructor(name, price, category, brand, ram, storage, processor) {
-    super(name, price, category);
-    this.brand = brand;
-    this.ram = ram;
-    this.storage = storage;
-    this.processor = processor;
+
+  displayEmployeeDetails() {
+    console.log(`ID: ${this.id}`);
+    console.log(`Name: ${this.name}`);
+    console.log(`Employee Type: ${this.employeeType}`);
+    console.log(`Total Salary: ${this.calculateSalary()}`);
   }
 }
 
-class Sepeda extends IsProduct {
-  constructor(name, price, category, brand, color, type) {
-    super(name, price, category);
-    this.brand = brand;
-    this.color = color;
-    this.type = type;
+class FulltimeEmployee extends Employee {
+  constructor(id, name, workingHour) {
+    super(id, name, "Full-time");
+    this.workingHour = workingHour;
+  }
+
+  calculateSalary() {
+    const hourlyRate = this.workingHour > 6 ? 75000 : 100000;
+    return this.workingHour * hourlyRate;
   }
 }
 
-const product = [
-  new Sepatu("Adidas 90 Continental", 1500000, "Sepatu", 43, "Black", "Adidas"),
-  new Komputer(
-    "Zenbook Pro 14",
-    25000000,
-    "Komputer",
-    "Asus",
-    "16 Mb",
-    "1 Tb",
-    "Intel Core i7"
-  ),
-  new Sepeda("Trifold", 5000000, "Sepeda", "Polygon", "Merah", "Fold Bike"),
-];
+class ParttimeEmployee extends Employee {
+  constructor(id, name, workingHour) {
+    super(id, name, "Part-time");
+    this.workingHour = workingHour;
+  }
 
-function findProductsByCategory(category) {
-  return product.filter((item) => item.category === category);
-}
-console.log(findProductsByCategory("Komputer"));
-
-function findProductByName(name) {
-  return product.find((item) => item.name === name);
-}
-console.log(findProductByName("Trifold"));
-
-function sortProductFromLowToHigh() {
-  return product.sort((a, b) => a.price - b.price);
-}
-console.log(sortProductFromLowToHigh());
-
-function sortProductFromHighToLow() {
-  return product.sort((a, b) => b.price - a.price);
-}
-console.log(sortProductFromHighToLow());
-
-// 4. Buatlah sebuah class untuk menampung user
-// a. Setiap user memiliki email,name,password
-// b. Untuk menambah user baru wajib lewat register
-// c. Email tidak boleh ada yang sama
-// d. Input email wajib ada validasi symbol “@”
-// e. Input password wajib menggunakan huruf besar 1, huruf kecil 1, symbol @ atau !
-// f. Tampilkan user yg sudah terdaftar lewat sebuah getter
-// g. User yang tampil hanya boleh email dan namenya saja
-
-class User {
-  constructor(name, email, password) {
-    this.name = name;
-    this.email = email;
-    this.password = password;
+  calculateSalary() {
+    const hourlyRate = this.workingHour > 6 ? 30000 : 50000;
+    return this.workingHour * hourlyRate;
   }
 }
+
+const fulltimeEmployee = new FulltimeEmployee(1, "Dimas", 7);
+const parttimeEmployee = new ParttimeEmployee(2, "Aji", 5);
+
+fulltimeEmployee.displayEmployeeDetails();
+parttimeEmployee.displayEmployeeDetails();
+
+/*
+Buatlah sebuah program untuk sebuah restaurant
+Menu resto ada cah kangkung, ayam mayo, fuyunghai , (bisa ditambah)
+Per masing2 menu akan memotong stock bahan makanan
+Untuk resep yang memotong bahan makanan bebas bisa dibuat sendiri
+
+Customer bisa memesan makanan
+Customer memiliki key nama,total,list pesanan, tgl pesan
+
+Resto bisa cek bahan makanan mereka
+Resto bisa cek makanan yang paling sering dipesan
+Resto bisa cek list pesanan makanan berdasarkan tanggal
+Resto bisa menambah stock bahan makanan
+Resto bisa cek customer mana yang menghabiskan uang paling banyak (sum dari seluruh order dari nama yang sama)
+*/
+
+// daftar bahan makanan
+class Restaurant {
+  constructor(menu) {
+    this.menu = {
+      "cah kangkung": {
+        ingredients: {
+          kangkung: 5,
+          garlic: 3,
+        },
+        harga: 20000,
+      },
+      "ayam mayo": {
+        ingredients: {
+          ayam: 7,
+          mayonaise: 3,
+        },
+        harga: 30000,
+      },
+      fuyunghai: {
+        ingredients: {
+          telur: 7,
+          bakso: 5,
+          ayam: 3,
+        },
+        harga: 40000,
+      },
+    };
+    this.stockBahan = {
+      kangkung: 100,
+      garlic: 100,
+      bakso: 100,
+      ayam: 100,
+      mayonaise: 100,
+    };
+    this.pesananMakanan = [];
+  }
+
+  motongStock(menu) {
+    for (let bahan in this.menuResto[menu].ingredients) {
+      this.stockBahan[bahan] -= this.menuResto[menu].ingredients[bahan];
+    }
+  }
+
+  orderMakanan(nama, pesanan) {
+    let total = 0;
+    let listPesanan = [];
+
+    pesanan.forEach((item) => {
+      let menu = this.menuResto[item.menu];
+      let harga = menu.harga;
+      total += harga * item.jumlah;
+      listPesanan.push({
+        menu: item.menu,
+        jumlah: item.jumlah,
+        harga: harga,
+      });
+
+      this.motongStock(item.menu);
+    });
+
+    let tglPesan = new Date();
+    let order = {
+      nama: nama,
+      total: total,
+      listPesanan: listPesanan,
+      tglPesan: tglPesan,
+    };
+
+    this.pesananMakanan.push(order);
+    return order;
+  }
+
+  cekHargaTerendah(menu) {
+    let hargaTerendah = Infinity;
+    let bahanTerendah = "";
+
+    for (let bahan in this.menuResto[menu].ingredients) {
+      let harga = this.menuResto[menu].ingredients[bahan];
+      if (harga < hargaTerendah) {
+        hargaTerendah = harga;
+        bahanTerendah = bahan;
+      }
+    }
+
+    return bahanTerendah;
+  }
+
+  cekStokTerbatas(menu) {
+    let stokTerbatas = Infinity;
+    let bahanTerbatas = "";
+
+    for (let bahan in this.menuResto[menu].ingredients) {
+      let stok = this.stockBahan[bahan];
+      if (stok < stokTerbatas) {
+        stokTerbatas = stok;
+        bahanTerbatas = bahan;
+      }
+    }
+
+    return bahanTerbatas;
+  }
+
+  cekHargaTertinggi(menu) {
+    let hargaTertinggi = -Infinity;
+    let bahanTertinggi = "";
+
+    for (let bahan in this.menuResto[menu].ingredients) {
+      let harga = this.menuResto[menu].ingredients[bahan];
+      if (harga > hargaTertinggi) {
+        hargaTertinggi = harga;
+        bahanTertinggi = bahan;
+      }
+    }
+
+    return bahanTertinggi;
+  }
+}
+
+
+class Restaurant {
+  constructor() {
+     this.menu = {
+       "kangkung": { "price": 5000, "stock": 100 },
+       "ayam_mayo": { "price": 10000, "stock": 100 },
+       "fuyunghai": { "price": 7000, "stock": 100 },
+     };
+     this.orders = [];
+     this.customers = [];
+  }
+ 
+  addStock(item, amount) {
+     this.menu[item].stock += amount;
+  }
+ 
+  checkStock(item) {
+     return this.menu[item].stock;
+  }
+ 
+  checkBestSellingItem() {
+     let bestSellingItem = null;
+     let maxOrder = 0;
+ 
+     this.orders.forEach(order => {
+       order.list.forEach(item => {
+         if (this.menu[item]) {
+           if (order.list.length > maxOrder) {
+             maxOrder = order.list.length;
+             bestSellingItem = item;
+           }
+         }
+       });
+     });
+ 
+     return bestSellingItem;
+  }
+ 
+  checkOrderByDate(date) {
+     let filteredOrders = this.orders.filter(order => order.date === date);
+     return filteredOrders;
+  }
+ 
+  addOrder(customer, list) {
+     let total = 0;
+ 
+     list.forEach(item => {
+       if (this.menu[item]) {
+         this.menu[item].stock--;
+         total += this.menu[item].price;
+       }
+     });
+ 
+     this.orders.push({ customer, total, list, date: new Date() });
+  }
+ 
+  addCustomer(name, total) {
+     this.customers.push({ name, total });
+  }
+ 
+  checkMostExpensiveCustomer() {
+     let mostExpensiveCustomer = null;
+     let maxTotal = 0;
+ 
+     this.customers.forEach(customer => {
+       if (customer.total > maxTotal) {
+         maxTotal = customer.total;
+         mostExpensiveCustomer = customer.name;
+       }
+     });
+ 
+     return mostExpensiveCustomer;
+  }
+ }
+
+ let restaurant = new Restaurant();
+
+restaurant.addOrder("Customer 1", ["kangkung", "ayam_mayo"]);
+restaurant.addOrder("Customer 1", ["kangkung", "fuyunghai"]);
+restaurant.addOrder("Customer 2", ["ayam_mayo", "fuyunghai"]);
+
+restaurant.addCustomer("Customer 1", 25000);
+restaurant.addCustomer("Customer 2", 22000);
+
+console.log(restaurant.checkStock("kangkung")); // 98
+console.log(restaurant.checkBestSellingItem()); // "kangkung"
+console.log(restaurant.checkOrderByDate(new Date())); // list order by date
+console.log(restaurant.checkMostExpensiveCustomer()); // "Customer 1"
