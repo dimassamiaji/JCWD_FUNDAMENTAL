@@ -180,3 +180,5 @@ parttimeEmployee.displayEmployeeDetails();
 // Resto bisa cek list pesanan makanan berdasarkan tanggal 
 // Resto bisa menambah stock bahan makanan 
 // Resto bisa cek customer mana yang menghabiskan uang paling banyak (sum dari seluruh order dari nama yang sama)
+
+
