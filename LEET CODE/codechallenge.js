@@ -47,3 +47,20 @@ function counter(n, calls) {
 
 // Testing
 console.log(counter(10, ["call","call","call"])); // [10,11,12]
+
+
+function chunk (arr, size) {
+  const chunkedArray = [];
+  let index = 0;
+
+while (index < arr.length) {
+  chunkedArray.push(arr.slice(index, index + size));
+  index += size;
+}
+
+return chunkedArray;
+};
+
+var arr = [1, 2, 3, 4, 5];
+var size = 1;
+console.log(chunk(arr, size));
