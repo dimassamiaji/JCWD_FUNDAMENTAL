@@ -253,5 +253,40 @@ const arrs1 = [1, 2, 3];
 // const { push } = arrs1;
 
 // push(4);
-arrs1.push(4);
-console.log(arrs1);
+// arrs1.push(4);
+// console.log(arrs1);
+
+// const returnObj = (something) => ({ hello: "udin" });
+
+// console.log(returnObj("huhu"));
+
+// const test = () => {
+//   let result = 1;
+
+//   while (result < 10) {
+//     for (let i = 0; i < 5; i++) {
+//       result + 1;
+
+//       result * 5;
+//     }
+//   }
+
+//   return result;
+// };
+
+// console.log(test());
+
+let arr = [1, 2, 3];
+let removedElement = arr.shift();
+console.log(arr);
+
+let oo = 7;
+console.log(oo++);
+console.log(--oo);
+console.log(oo - 1);
+
+const x = "1";
+console.log("5.4" + x);
+
+let pi = 3.14159;
+console.log(pi.toPrecision());
