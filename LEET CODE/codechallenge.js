@@ -290,3 +290,9 @@ console.log("5.4" + x);
 
 let pi = 3.14159;
 console.log(pi.toPrecision());
+
+console.log(typeof null);
+
+let output = "hello";
+if ("0" != true) output += ", world";
+console.log(output);
